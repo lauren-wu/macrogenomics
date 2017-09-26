@@ -24,14 +24,14 @@ The python codes used in the study of macrogenomics engineering
 	
 
 
-Input data:
+# Input data:
 
-	full_genes.xlsx: the microarray measurement result
+full_genes.xlsx: the microarray measurement result
 	
-	There are 4 groups of microarray measurements in total. Each group contains 4 replicated measurements. In the full_genes.xlsx file, the first columns correspond to the control measurement and 5-8, 9-12 and 13-16 columns correspond to the treated groups. The relative sigma values for them are: 1.001, 1, 0.9933 and 0.9151 
+There are 4 groups of microarray measurements in total. Each group contains 4 replicated measurements. In the full_genes.xlsx file, the first columns correspond to the control measurement and 5-8, 9-12 and 13-16 columns correspond to the treated groups. The relative sigma values for them are: 1.001, 1, 0.9933 and 0.9151 
 
 
-Output data:
+# Output data:
 	
 1.	mcExpressionOut.py: max_mRNA_initial.csv, phi_initial.csv, second_derivative_TF_norm.csv, tot_con.csv
 	
