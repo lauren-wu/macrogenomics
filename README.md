@@ -1,6 +1,6 @@
 # macrogenomics
+The python codes used in the study of macrogenomics engineering
 Codes
-
 1.	mcExpressionOut.py: Output the result from Monte Carlo simulation and Brownian Dynamics simulation.
 	
 2.	macrogenomics.py: The class required to do any chromatin packing macromolecular crowding model calculation
