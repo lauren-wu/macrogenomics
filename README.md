@@ -1,5 +1,13 @@
 # macrogenomics
-The python codes used in the study of macrogenomics engineering
+The python codes used in the study of macrogenomics engineering. This project is focused on implementing the chromatin-packing macromolecular-crowding (CPMC) model developed in the wrok done by Almassalha elt al. 2017 Nature biomedical engineering. 
+
+## Installation
+Download the whole folder into local direction. Run mcExpressionOut.py to generate the required input files calculated by Monte Carlo simulation and Brownian Dynamics simulation for CPMC). For example, type:
+
+	python mcExpressionOut.py
+	
+in the terminal for linux machine
+
 ## Codes
 
 1. mcExpressionOut.py: Output the result from Monte Carlo simulation and Brownian Dynamics simulation.
