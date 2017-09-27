@@ -21,7 +21,8 @@ i=0
 for D in D_0:
     sigma=cpmc.phi_initial*(1-cpmc.phi_initial) # variance of continuous chromatin crowding distribution
     sigma_phi=sigma*(cpmc.Li/cpmc.r_min)**(D-3) # variance of the distribution of the local crowding condition in interaction volume
-    ASA=(1e5)**(-1/D) # size of fractal is 1e5 base pairs
+    Se,expression,ratio=cpmc.se()
+    ASA=ratio**(-1/D) # 1e8 is the size of fractal
     std_s[i]=-ASA*cpmc.sec[2]*sigma_phi[2]
     i+=1
 

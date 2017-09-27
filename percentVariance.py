@@ -12,9 +12,9 @@ import macrogenomics
 
 #### Set up data files ##############
 cpmc = macrogenomics.cp_mc()
-n_quantile_0 = np.exp(np.arange(1,7,0.2)).astype(int) # list of number of quantiles
+n_quantile_0 = np.exp(np.arange(1.5,7,0.2)).astype(int) # list of number of quantiles
 r_s = [] # percentage of variance
-C0,ld,D_list,ldlist=cpmc.Ld_D()
+C0,ld=cpmc.Ld_D()
 
 #### Calculate the percentage of variance under each quantile ####
 for n_quantile in n_quantile_0:
@@ -27,10 +27,9 @@ for n_quantile in n_quantile_0:
     y_data = Se.mean(axis=0)[1:]*cpmc.D_fit/(C0*ld)
     r_s.append(cpmc.r_sq(y_data,y_fit))
 r_s = np.array(r_s)
-print(r_s)
 n_group = np.array(2445/n_quantile_0)
 p = np.vstack((n_group,r_s)).transpose()
-index = np.all([~np.isnan(r_s),n_group<350],axis=0)
+index = n_group<350
 np.savetxt('percentOfVariance.csv',p[index,:],fmt='%3.2f,%.9f')
 
     

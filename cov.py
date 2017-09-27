@@ -69,6 +69,6 @@ D=(a[:,0]-a[0,0])*1.6483+2.55
 cov=np.mean((text),axis=0)**(1/2)/mean_temp
 
 # save the output
-p=np.vstack((D,cov,error)).transpose
+p=np.vstack((D,cov,error)).transpose()
 np.savetxt('cov_experiment.csv',p,delimiter=',',fmt='%.9f')
 

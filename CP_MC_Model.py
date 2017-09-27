@@ -19,12 +19,6 @@ import sympy as sp
 from scipy import stats
 import scipy.special as sc
 import macrogenomics
-
-## Define the in cell function ######
-def magic(str2):
-    numList=[int(s) for s in str2 if s.isdigit()]
-    s = ''.join(map(str, numList))
-    return int(s)
       
 #######################################################################
 #### Output the relation with initial expression ##############
@@ -37,9 +31,9 @@ initial=np.zeros((4,n_quantile))
 #### Output the experimental data ##########
 for m in range(4):
     percentile_norm,Se_ex[m,:] = cpmc.se_experiment(n_quantile,m)
-error = stats.sem(Se)
-C0,ld,D_List,ldlist = cpmc.Ld_D()#C0=dD/dLd, calculate the prefactor to change sigma to D
-p = np.vstack((percentile_norm[1:],Se_ex.mean(axis=0)[1:]*cpmc.D_fit/(C0*ld),error[1:])).transpose()
+error = stats.sem(Se_ex)
+C0,ld= cpmc.Ld_D()# C0=dD/dLd, calculate the prefactor to change sigma to D
+p = np.vstack((percentile_norm[1:],Se_ex.mean(axis=0)[1:]*cpmc.D_fit/(C0*ld),error[1:])).transpose() # dln(E)/dD*D=(dx/dld*ld)*D/(C0*ld)
 np.savetxt('sensitivity_experiment.csv',p,delimiter=',',fmt='%.9f')
 
 #### Output the simulation prediction ##########
@@ -52,15 +46,15 @@ p = np.vstack((x,para2(x))).transpose()
 np.savetxt("sensitivity_model.csv",p,delimiter=',',fmt='%.9f')
 
 ### Output function g ####
-kappa,x,g_f=cpmc.g_fit(cpmc.D_fit) # calculate the critical point kappa
-p=np.vstack((x,g_f)).transpose()
+kappa,x,g_f =cpmc.g_fit(cpmc.D_fit) # calculate the critical point kappa
+p = np.vstack((x,g_f)).transpose()
 np.savetxt('g_function.csv',p,delimiter=',',fmt='%.9f')
 print("the critical rate of expression of g function, kappa, is: ",kappa[0]*10**6," nM/s")
 
 #### Output sensitivity calculated from g function
 x = np.linspace(-2.,2.8,100)
-exp_g=np.exp(x)*cpmc.initial_aver
-y=cpmc.se_g(exp_g)
+exp_g = np.exp(x)*cpmc.initial_aver
+y = cpmc.se_g(exp_g)
 p = np.vstack((x,y)).transpose()
 np.savetxt("sensitivity_model_g.csv",p,delimiter=',',fmt='%.9f')
 

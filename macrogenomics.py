@@ -28,13 +28,12 @@ class cp_mc:
     phi_initial  =np.genfromtxt('phi_initial.csv')
     tot_con      =np.genfromtxt('tot_con.csv')
     D_fit        =2.68 ## The average D of cells
-    norm_fit     =0.8 # normalization factor
-    Li0          =20e-9 # Size of interaction volume
+    Li0          =15e-9 # Size of interaction volume for single base pair
     r_max        =1000e-9 # maximum radius of chromatin packing scale
     r_min        =1e-9 # size of elementary particle
     len_gene     =1e5 # average length of genes
     initial_aver =0.00056 # the average initial expression rate
-    Li           =(Li0+len_gene**(1/D_fit)*r_min)
+    Li           =(Li0+len_gene**(1/D_fit)*r_min) # the total interaction volume
     
     
     def Ld_D(self):
@@ -42,6 +41,7 @@ class cp_mc:
         the PWS code to transfer sigma(ld) to D
         output:
         C0: the derivative of D as respect to Sigma (ld) 
+        Ld: PWS measurement parameter Ld(sigma)
         '''
         ################# Lusik's code ########################
         Ln  = 1.50e-6# microns
@@ -81,13 +81,14 @@ class cp_mc:
         dL_d = ldList[num+1]-ldList[num]
         dD = D_list[num+1]-D_list[num]
         C0 = dD/dL_d
-        return(C0,L_d,D_list,ldList)
+        return(C0,L_d)
     def se(self):
         '''
         Calculate the gene expression sensitivity using cp-mc model
         output:
         Se: sensitivity as a function of initial average expression
         expression: initial average expression in each subgroups (decided by the molecular condition)
+        ratio: the ratio between the total mass of fractal and the mass of elementary particle, M_f/M_in
         '''
         ratio = (self.r_max/self.r_min)**self.D_fit # M_f/M_min
         sigma = self.phi_initial*(1-self.phi_initial) # variance of crowding density at each point
@@ -134,18 +135,34 @@ class cp_mc:
     def func2(self,x,a):
         '''
         the fitting function for g
+        input:
+        x: intial mRNA expression at average phi (~ the maximum phi), epsilon_0
+        a: the fitting parameter of g function, kappa=a^2*3e-4, where 3e-4 is the degradation rate of mRNA,
+        used to change steady state expression concentration to transcription rate 
+        output: the average expression of genes sharing similar molecular properties, epsilon_bar
         ''' 
         return a/x**(1/2)
 
     def g_function(self,x,popt,sigma):
         '''
         simplied format of g function
+        input:
+        x: the average expression of genes sharing similar molecular properties, epsilon_bar
+        popt: a, where kappa=a^2*3e-4
+        sigma: the variance of average crowding density within each interaction volume
+        output: the g function as a function of x (epsilon_bar)
         '''
         return 8*x/(8*x+popt**2*sigma**2+(16*popt**2*x*sigma**2+popt**4*sigma**4)**(1/2))
        
     def g_fit(self,D):
         '''
         g function relating epsilon_bar and epsilon(m,phi_bar)
+        input:
+        D: fractal dimension
+        output:
+        popt: fitting parameter kappa, the critical expression rate
+        x: the average expression of genes sharing similar molecular properties, epsilon_bar
+        g_f: the fitted g function as respect to x
         '''
         epsilon_0=self.mRNA_initial # the range of mRNA_initial that makes epsilon_bar positive
         ydata=self.sec
@@ -154,11 +171,16 @@ class cp_mc:
         epsilon_bar=self.mRNA_initial*(1+1/2*sigma*self.sec)
         x=epsilon_bar
         g_f=self.g_function(x,popt[0],sigma)
-        return (popt**2*3e-4,x,g_f) # kappa=popt^2*degradation rate of mRNA
+        popt=popt**2*3e-4
+        return (popt,x,g_f) # kappa=popt^2*degradation rate of mRNA
         
     def se_g(self,x):
         '''
         The sensitivity curve calculated by the approximation of g function
+        input:
+        x: the average expression of genes sharing similar molecular properties, epsilon_bar
+        output:
+        se: the sensitivity calculated by the g function
         '''
         ratio = (self.r_max/self.r_min)**self.D_fit
         pop,a,b=self.g_fit(self.D_fit) # fit the g function to find critical point kappa
@@ -173,7 +195,7 @@ class cp_mc:
         '''
         ssr = np.sum((y_fit-y_data-np.mean(y_fit-y_data))**2)
         rrio = np.sum((y_data-np.mean(y_data))**2)
-    return 1-ssr/rrio
+        return 1-ssr/rrio
 
 
 
