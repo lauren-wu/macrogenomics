@@ -79,7 +79,7 @@ k_o_phi = k_o*np.exp(f_cro_TF_phi/2)*f_TF_phi*np.exp(-f_ba_TF_phi/2)
 k_b_phi = k_b*np.exp(f_cro_RNAps_phi)*np.exp(f_cro_RNAp_phi/2)*f_RNAp_phi*np.exp(-f_ba_RNAp_phi/2)*np.exp(-f_ba_RNAps_phi)
 
 ## Start the calculation of [mRNA](phi) ####
-tot_con = 35*10**np.linspace(0,4,30)*1e-6 ## the intial molecular condition [mM]
+tot_con = 35*10**np.linspace(0,4,50)*1e-6 ## the intial molecular condition [mM]
 mRNA_initial = np.zeros(len(tot_con)) # the [mRNA] at maximum under each iniyial condition at steady state[mM]
 phi_range_real = np.zeros(len(tot_con))# the phi at mRNA_max under each initial condition [%]
 sec = np.zeros(len(tot_con))# the second derivative of expression curve [mM]
@@ -117,8 +117,8 @@ for con in tot_con:
     n=n+1
     
 ### Save the data ################################
-np.savetxt('max_mRNA_initial.csv',mRNA_initial) # to generate mRNA production rate, the values in max_mRNA_initial.csv needs to be multiplied by mu, which is 3e-10 [s-1] in this case
-np.savetxt('phi_initial.csv',phi_range_real)
-np.savetxt('second_derivative_TF_norm.csv',sec)
-np.savetxt('tot_con.csv',tot_con)
+np.savetxt('max_mRNA_initial_test.csv',mRNA_initial) # to generate mRNA production rate, the values in max_mRNA_initial.csv needs to be multiplied by mu, which is 3e-10 [s-1] in this case
+np.savetxt('phi_initial_test.csv',phi_range_real)
+np.savetxt('second_derivative_TF_norm_test.csv',sec)
+np.savetxt('tot_con_test.csv',tot_con)
 

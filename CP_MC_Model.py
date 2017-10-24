@@ -27,7 +27,7 @@ cpmc = macrogenomics.cp_mc()
 n_quantile = 30# number of quantiles
 Se_ex=np.zeros((4,n_quantile)) # sensitivity of microarray data
 initial=np.zeros((4,n_quantile))
-
+print(cpmc.Li)
 #### Output the experimental data ##########
 for m in range(4):
     percentile_norm,Se_ex[m,:] = cpmc.se_experiment(n_quantile,m)
@@ -39,8 +39,9 @@ np.savetxt('sensitivity_experiment.csv',p,delimiter=',',fmt='%.9f')
 #### Output the simulation prediction ##########
 Se_model,expression,ratio=cpmc.se() # sensitivity predicted by the model
 x = np.log(expression/cpmc.initial_aver)
+print(x)
 y = Se_model
-para2 = np.poly1d(np.polyfit(x,y,10))
+para2 = np.poly1d(np.polyfit(x[3:],y[3:],10))
 x = np.linspace(-2.,2.8,100)
 p = np.vstack((x,para2(x))).transpose()
 np.savetxt("sensitivity_model.csv",p,delimiter=',',fmt='%.9f')

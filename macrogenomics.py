@@ -23,15 +23,15 @@ class cp_mc:
     ld_exp = np.array([1.001, 1., 0.9933, 0.9151]) # Relative Ld value
  
     ## Molecular Crowding output and Chromatin Packing parameters
-    sec          =np.genfromtxt('second_derivative_TF_norm.csv')
-    mRNA_initial =np.genfromtxt('max_mRNA_initial.csv')
-    phi_initial  =np.genfromtxt('phi_initial.csv')
-    tot_con      =np.genfromtxt('tot_con.csv')
+    sec          =np.genfromtxt('second_derivative_TF_norm_test.csv')
+    mRNA_initial =np.genfromtxt('max_mRNA_initial_test.csv')
+    phi_initial  =np.genfromtxt('phi_initial_test.csv')
+    tot_con      =np.genfromtxt('tot_con_test.csv')
     D_fit        =2.68 ## The average D of cells
     Li0          =15e-9 # Size of interaction volume for single base pair
     r_max        =1000e-9 # maximum radius of chromatin packing scale
     r_min        =1e-9 # size of elementary particle
-    len_gene     =1e5 # average length of genes
+    len_gene     =6e3 # average length of genes
     initial_aver =0.00056 # the average initial expression rate
     Li           =(Li0+len_gene**(1/D_fit)*r_min) # the total interaction volume
     

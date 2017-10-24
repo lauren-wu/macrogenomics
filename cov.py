@@ -20,7 +20,7 @@ for D in D_0:
 		g_d=g_f	
 	else:
 		g_d=np.vstack((g_d,g_f))
-n=2
+n=5
 cov_a=2**(1/2)*(1/g_d[:,n]-1)
 p=np.vstack((D_0,cov_a/cov_a[0])).transpose()
 np.savetxt('cov_model.csv',p,delimiter=',',fmt='%.9f')
